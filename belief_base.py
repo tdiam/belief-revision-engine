@@ -18,7 +18,10 @@ class belief_base:
             print("\nEnter a prepositional formula, \n'help' for instructions, \n'print' to view formulas, \n'quit' to exit")
             formula = input("Formula: ")
             if formula == 'help':
-                print("TODO\n")
+                print("SYMBOLS:\n\t{a, b, ... , z}\n\t{A, B, ... , Z}\n\n" + 
+                      "OPERATORS:\n\tAND:     a & b\n\tOR:      a | b\n\t" + 
+                      "NOT:     ~a\n\tXOR:     a ^ b\n\tIMPLIES: a >> b, b << a" + 
+                      "\n\tIFF:     Equivalent(a, b)")
             elif formula == 'print':
                 for x in self.formulas:
                     print(x)
@@ -38,10 +41,10 @@ class belief_base:
     def add_formula(self, formula):
         preposition = to_cnf(formula)
         
-        if is_consistent(self, preposition):
+        if is_consistent(self.formulas, preposition):
             self.formulas.add(preposition)
         else:
-            self = revise_base(self, preposition)
+            self.formulas = revise_base(self.formulas, preposition)
             
 
 bb = belief_base()
