@@ -10,11 +10,13 @@ def is_consistent(bb, formula):
     for belief in bb:
         test = combine_cnfs(belief, formula)
         dictionary = satisfiable(test)
-        if dictionary is False:
-            return False
-        for __, value in dictionary.items():
-            if value is False:
-                print("INCONSISTENT")
+        if isinstance(dictionary, dict):
+            for __, value in dictionary.items():
+                if value is False:
+                    print("INCONSISTENT")
+                    return False
+        else:
+            if dictionary is False:
                 return False
         
     return True
