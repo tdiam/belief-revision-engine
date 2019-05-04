@@ -9,9 +9,13 @@ Given two cnfs a, b:
 def is_consistent(bb, formula):
     for belief in bb:
         test = combine_cnfs(belief, formula)
-        if satisfiable(test) is False:
-            print("INCONSISTENT")
+        dictionary = satisfiable(test)
+        if dictionary is False:
             return False
+        for __, value in dictionary.items():
+            if value is False:
+                print("INCONSISTENT")
+                return False
         
     return True
 

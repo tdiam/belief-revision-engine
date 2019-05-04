@@ -1,6 +1,6 @@
 from sympy.logic.boolalg import to_cnf, is_cnf
 from consistency import is_consistent
-from revision import revise_base
+from revision import resolve_base
 
 """
 Belief base class to store all currently held beliefs in a set
@@ -28,12 +28,10 @@ class belief_base:
             elif formula == 'quit':
                 return
             else:
-                try:
-                    is_cnf(formula)
-                    self.add_formula(formula)
-                except:
-                    print("Invalid formula syntax")
-                    
+                    if not is_cnf(formula):
+                        print("Invalid formula syntax")
+                    else:
+                        self.add_formula(formula)                    
         
     """
     Add new formula to the belief base
@@ -44,7 +42,6 @@ class belief_base:
         if is_consistent(self.formulas, preposition):
             self.formulas.add(preposition)
         else:
-            self.formulas = revise_base(self.formulas, preposition)
-            
+            self.formulas = set(resolve_base(list(self.formulas)[0], preposition))
 
 bb = belief_base()
