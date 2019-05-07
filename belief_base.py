@@ -28,11 +28,12 @@ class belief_base:
             elif formula == 'quit':
                 return
             else:
-                    try:
-                        is_cnf(formula)
-                        self.add_formula(formula)  
-                    except:
-                        print("Invalid formula syntax")
+                try:
+                    is_cnf(formula)
+                except:
+                    print("Invalid formula syntax")
+                    
+                self.add_formula(formula)  
                                           
         
     """
