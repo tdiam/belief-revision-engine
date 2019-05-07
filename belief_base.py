@@ -41,5 +41,40 @@ class belief_base:
     def add_formula(self, formula):
         preposition = to_cnf(formula)
         self.formulas = resolve_base(self.formulas, preposition)
+        for x in self.formulas: print(x)
 
 bb = belief_base()
+
+"""
+Test Cases Used so Far:
+    Input_1:
+        a|b|c, ~b|~c|f
+    Expected Output:
+        a | c | ~c | f, a | b | ~b | f
+    Actual Output:
+        a | c | f | ~c, a | b | f | ~b
+        
+    Input_2:
+        p|q, p>>r, q>>r
+    Expected Output:
+        r
+    Actual Output:
+        r
+    Input_3:
+        a|b, ~a|c
+    Expected Output:
+        b|c
+    Actual Output:
+        b|c
+    Input_4:
+        d, ~d
+    Expected Output:
+        
+    Actual Output:
+    Input_5:
+        a|b|c|d, ~a|d
+    Expected Output:
+        b|c|d
+    Actual Output:
+        b|c|d
+"""

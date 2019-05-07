@@ -1,4 +1,4 @@
-from sympy.logic.boolalg import Or, to_cnf
+from sympy.logic.boolalg import And, Or, to_cnf
 from consistency import is_consistent
 
 """
@@ -7,29 +7,37 @@ Only necessary when formula was found to be inconsistent with the belief base
 """
 
 def resolve_base(bb, formula):
-    consistent = True
+    "Propositional Logic Resolution: say if alpha follows from KB. [Fig. 7.12]"
+    consistent = False
     result = set()
     
+    ##Break up sentence by conjuncts
+    clauses = conjuncts(to_cnf(formula))
     for clause in bb:
-        # Only revise if formula is inconsistent with existing clause
-        if is_consistent(clause, formula):
-            result.add(clause)
-            
-        else:
-            consistent = False
-            
-            # Remove inconsistent clause
-            updates = resolve_clauses(clause, formula)
-            
-            # Add new clauses from contraction
-            for update in updates:
-                result.add(update)
-        
-    # No inconsistencies found
-    if consistent:
-        result.add(formula)
-                
-    return result
+        clauses.append(clause)
+    
+    ##Assume no consistency and stop if belief's found to be consistent
+    while not consistent:
+        n = len(clauses)
+        pairs = [(clauses[i], clauses[j]) for i in range(n) for j in range(i+1, n)]
+        for (ci, cj) in pairs:
+            resolvents = resolve_clauses(ci, cj)
+            if is_consistent(ci, cj): consistent = True
+            #Check special case where resolved to empty set
+            if resolvents is False:
+                return set()
+            else:
+                for x in resolvents:
+                    result.add(x)
+        #If result is consistent, break loop and return the initial clauses
+        if result.issubset(set(clauses)): 
+            consistent = True
+    
+    ##If any resolve results were found, return them. Otherwise, return the clauses
+    if len(result) > 0: 
+        return result
+    else: 
+        return clauses
 
 def resolve_clauses(ci, cj):
     """Return the first clauses that can be obtained by resolving clauses ci and cj."""
@@ -62,30 +70,33 @@ def resolve_clauses(ci, cj):
                 if len(ci_temp) == 0:
                     part1 = ""
                 elif len(ci_temp) == 1:
-                    part1 += str(ci_temp[0])
+                    part1 = str(ci_temp[0])
                 else:
-                    for var in range(len(ci_temp)-1):
-                        part1 += str(to_cnf(ci_temp[var] | ci_temp[var+1]))
+                    for var in range(len(ci_temp)):
+                        if var == len(ci_temp)-1:
+                            part1 += str(ci_temp[var])
+                        else:
+                            part1 += str(ci_temp[var]) + "|"
                 if len(cj_temp) == 0:
                     part2 = ""
                 elif len(cj_temp) == 1:
-                    part2 += str(cj_temp[0])
+                    part2 = str(cj_temp[0])
                 else:
-                    for var in range(len(cj_temp)-1):
-                        part2 += str(to_cnf(cj_temp[var] | cj_temp[var+1]))
-                if part1 == "" and part2 == "":
-                    break
-                elif part1 == "":
-                    #clauses = to_cnf(part2)
+                    for var in range(len(cj_temp)):
+                        if var == len(cj_temp)-1:
+                            part2 += str(cj_temp[var])
+                        else:
+                            part2 += str(cj_temp[var]) + "|"
+
+                if len(part1) == 0 and len(part2) == 0:
+                    clauses = False
+                elif len(part1) == 0:
                     clauses.append(to_cnf(part2))
-                elif part2 == "":
-                    #clauses = to_cnf(part1)
+                elif len(part2) == 0:
                     clauses.append(to_cnf(part1))
                 else:
-                    #clauses = (to_cnf(to_cnf(part1) | to_cnf(part2)))
                     clauses.append((to_cnf(to_cnf(part1) | to_cnf(part2))))
-                #return {clauses}
-    
+                #print("Clauses: ", clauses)
     return clauses
 
 def disjuncts(s):
@@ -94,3 +105,11 @@ def disjuncts(s):
         return list(s.args)
     else:
         return [s]
+    
+def conjuncts(s):
+    """Return a list of the conjuncts in s."""
+    if isinstance(s, And):
+        return list(s.args)
+    else:
+        return [s]
+

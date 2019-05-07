@@ -17,5 +17,3 @@ def is_consistent(ci, cj):
 
 def combine_cnfs(a, b):
     return And(a, b)
-
-    
