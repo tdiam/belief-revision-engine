@@ -1,11 +1,37 @@
 from sympy.logic.boolalg import Or, to_cnf
+from consistency import is_consistent
 
 """
 Revises belief base using the given formula
 Only necessary when formula was found to be inconsistent with the belief base
 """
 
-def resolve_base(ci, cj):
+def resolve_base(bb, formula):
+    consistent = True
+    result = set()
+    
+    for clause in bb:
+        # Only revise if formula is inconsistent with existing clause
+        if is_consistent(clause, formula):
+            result.add(clause)
+            
+        else:
+            consistent = False
+            
+            # Remove inconsistent clause
+            updates = resolve_clauses(clause, formula)
+            
+            # Add new clauses from contraction
+            for update in updates:
+                result.add(update)
+        
+    # No inconsistencies found
+    if consistent:
+        result.add(formula)
+                
+    return result
+
+def resolve_clauses(ci, cj):
     """Return the first clauses that can be obtained by resolving clauses ci and cj."""
     clauses = []
     ci_temp = ci

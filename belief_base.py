@@ -1,5 +1,4 @@
 from sympy.logic.boolalg import to_cnf, is_cnf
-from consistency import is_consistent
 from revision import resolve_base
 
 """
@@ -41,10 +40,6 @@ class belief_base:
     """
     def add_formula(self, formula):
         preposition = to_cnf(formula)
-        
-        if is_consistent(self.formulas, preposition):
-            self.formulas.add(preposition)
-        else:
-            self.formulas = set(resolve_base(list(self.formulas)[0], preposition))
+        self.formulas = resolve_base(self.formulas, preposition)
 
 bb = belief_base()
