@@ -77,4 +77,10 @@ Test Cases Used so Far:
         b|c|d
     Actual Output:
         b|c|d
+    Input_6:
+        a&b, c|d, a&~b
+    Expected Output:
+        a, c|d
+    Actual Output:
+        a, c|d
 """

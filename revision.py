@@ -23,9 +23,12 @@ def resolve_base(bb, formula):
         for (ci, cj) in pairs:
             resolvents = resolve_clauses(ci, cj)
             if is_consistent(ci, cj): consistent = True
+            
             #Check special case where resolved to empty set
-            if resolvents is False:
-                return set()
+            if resolvents == False:
+                clauses.remove(ci)
+                clauses.remove(cj)
+                return set(clauses)
             else:
                 for x in resolvents:
                     result.add(x)
@@ -42,6 +45,8 @@ def resolve_base(bb, formula):
 def resolve_clauses(ci, cj):
     """Return the first clauses that can be obtained by resolving clauses ci and cj."""
     clauses = []
+    #print("Clause1: ", ci)
+    #print("Clause2: ", cj)
     ci_temp = ci
     cj_temp = cj
     for di in disjuncts(ci):
@@ -89,7 +94,7 @@ def resolve_clauses(ci, cj):
                             part2 += str(cj_temp[var]) + "|"
 
                 if len(part1) == 0 and len(part2) == 0:
-                    clauses = False
+                    return False
                 elif len(part1) == 0:
                     clauses.append(to_cnf(part2))
                 elif len(part2) == 0:
