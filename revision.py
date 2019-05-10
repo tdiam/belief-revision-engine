@@ -7,7 +7,7 @@ Only necessary when formula was found to be inconsistent with the belief base
 """
 
 def resolve_base(bb, formula):
-    "Propositional Logic Resolution: say if alpha follows from KB. [Fig. 7.12]"
+    "Propositional Logic Resolution, say if formula follows from Belief Base."
     consistent = False
     result = set()
     
@@ -43,20 +43,15 @@ def resolve_base(bb, formula):
         return clauses
 
 def resolve_clauses(ci, cj):
-    """Return the first clauses that can be obtained by resolving clauses ci and cj."""
+    "Return the first clauses that can be obtained by resolving clauses ci and cj."
     clauses = []
-    #print("Clause1: ", ci)
-    #print("Clause2: ", cj)
+
     ci_temp = ci
     cj_temp = cj
     for di in disjuncts(ci):
-        #print("Here_1")
         for dj in disjuncts(cj):
-            #print("Here_2")
-            #print(di)
-            #print(dj)
+
             if di == ~dj or ~di == dj:
-                #print("Here_3")
                 ##REMOVE CLAUSES WHICH ARE RESOLVED
                 ci_temp = list(ci.args)
                 if len(ci_temp) > 1:
@@ -101,18 +96,17 @@ def resolve_clauses(ci, cj):
                     clauses.append(to_cnf(part1))
                 else:
                     clauses.append((to_cnf(to_cnf(part1) | to_cnf(part2))))
-                #print("Clauses: ", clauses)
     return clauses
 
 def disjuncts(s):
-    """Return a list of the disjuncts in s."""
+    "Return a list of the disjuncts in s."
     if isinstance(s, Or):
         return list(s.args)
     else:
         return [s]
     
 def conjuncts(s):
-    """Return a list of the conjuncts in s."""
+    "Return a list of the conjuncts in s."
     if isinstance(s, And):
         return list(s.args)
     else:
