@@ -96,6 +96,10 @@ class BeliefBase:
         """
 
         formula = to_cnf(formula)
+        if entails([], formula):
+            # Tautologies have degree = 1
+            return 1
+
         base = []
         for order, group in self.iter_by_order():
             # Get formulas from beliefs
