@@ -1,6 +1,6 @@
-# Belief base revision
+# Belief revision engine
 
-Python implementation of entrenchment-based revision in belief bases.
+A Python implementation for a belief revision engine. The engine uses a belief base representation and change functions based on epistemic entrenchment.
 
 ## About the project
 The project is part of the course [02180 Introduction to Artificial Intelligence](http://kurser.dtu.dk/course/2018-2019/02180) of DTU.
@@ -8,7 +8,7 @@ The project is part of the course [02180 Introduction to Artificial Intelligence
 ## Algorithms
 
 * **Entailment check**:  
-  Based on the algorithm in the book "Artificial Intelligence: A Modern Approach" by Stuart Russell and Peter Norvig. The implementation has been adapted from the [aima-python](https://github.com/aimacode/aima-python/) repository (MIT license).
+  Based on the `PL-Resolution` algorithm in the book "Artificial Intelligence: A Modern Approach" by Stuart Russell and Peter Norvig. The implementation has been adapted from the [aima-python](https://github.com/aimacode/aima-python/) repository (MIT license).
 * **Finite partial entrenchment ranking**:  
   Based on the algorithms in [Applications of Belief Revision](http://research.it.uts.edu.au/magic/Mary-Anne/publications/BeliefRevisionApplicationsM-AWilliams.pdf) by Mary-Anne Williams, 1996.
 
@@ -17,6 +17,13 @@ The project is part of the course [02180 Introduction to Artificial Intelligence
 * [Devin Stein](https://github.com/dstein5) (s186262)
 * [Brian Domanski](https://github.com/bdomanski) (s186138)
 * [Theodoros Diamantidis](https://github.com/tdiam) (s186463)
+
+## Usage
+
+The engine can be used through our command-line interface (CLI) as follows:
+```bash
+$ python cli.py
+```
 
 ## License
 
