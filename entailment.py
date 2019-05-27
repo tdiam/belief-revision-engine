@@ -37,7 +37,11 @@ def entails(base, formula):
     for f in base:
         clauses += conjuncts(f)
     # Add contradiction to start resolution
-    clauses += conjuncts(to_cnf(~formula))
+    clauses += conjuncts(~to_cnf(formula))
+
+    # Special case if one clause is already False
+    if False in clauses:
+        return True
 
     result = set()
     while True:
