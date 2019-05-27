@@ -34,7 +34,7 @@ def handle_input(bb):
         except SympifyError:
             print('Invalid formula')
         except ValueError:
-            print('Order could not be parsed into a real number')
+            print('Order has to be a real number from 0 to 1')
         print()
 
     elif action == 'a':
@@ -48,7 +48,7 @@ def handle_input(bb):
         except SympifyError:
             print('Invalid formula')
         except ValueError:
-            print('Order could not be parsed into a real number')
+            print('Order has to be a real number from 0 to 1')
         print()
 
     elif action == 'd':

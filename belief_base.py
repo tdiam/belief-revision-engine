@@ -18,6 +18,10 @@ from utils import associate
 
 logger = logging.getLogger()
 
+def _validate_order(x):
+    if not(0 <= x <= 1):
+        raise ValueError
+
 class BeliefBase:
     """
     Belief base that implements epistemic entrenchment
@@ -84,6 +88,7 @@ class BeliefBase:
 
     def add(self, formula, order):
         formula = to_cnf(formula)
+        _validate_order(order)
         belief = Belief(formula, order)
         self.beliefs.add(belief)
 
@@ -118,6 +123,7 @@ class BeliefBase:
         """
 
         x = to_cnf(formula)
+        _validate_order(order)
         logger.debug(f'Expanding with {x} and order {order}')
 
         if not entails([], ~x):
@@ -152,6 +158,7 @@ class BeliefBase:
         """
 
         x = to_cnf(formula)
+        _validate_order(order)
         logger.debug(f'Contracting with {x} and order {order}')
 
         for belief in self.beliefs:
@@ -174,6 +181,7 @@ class BeliefBase:
         """
 
         x = to_cnf(formula)
+        _validate_order(order)
         dx = self.degree(x)
         logger.debug(f'Revising with {x} and order {order} and degree {dx}')
 
