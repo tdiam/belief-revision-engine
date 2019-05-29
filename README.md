@@ -10,7 +10,7 @@ The project is part of the course [02180 Introduction to Artificial Intelligence
 ### Algorithms
 
 * **Entailment check**:  
-  Based on the `PL-Resolution` algorithm in the book "Artificial Intelligence: A Modern Approach" by Stuart Russell and Peter Norvig. The implementation has been adapted from the [aima-python](https://github.com/aimacode/aima-python/) repository (MIT license).
+  Based on the `PL-Resolution` algorithm in the book "[Artificial Intelligence: A Modern Approach](http://aima.cs.berkeley.edu/)" by Stuart Russell and Peter Norvig. The implementation has been adapted from the [aima-python](https://github.com/aimacode/aima-python/) repository (MIT license).
 * **Finite partial entrenchment ranking**:  
   Based on the algorithms in [Applications of Belief Revision](http://research.it.uts.edu.au/magic/Mary-Anne/publications/BeliefRevisionApplicationsM-AWilliams.pdf) by Mary-Anne Williams, 1996.
 
