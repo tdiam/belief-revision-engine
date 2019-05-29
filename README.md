@@ -2,30 +2,50 @@
 
 A Python implementation for a belief revision engine. The engine uses a belief base representation and change functions based on epistemic entrenchment.
 
-## About the project
+
+### About the project
 The project is part of the course [02180 Introduction to Artificial Intelligence](http://kurser.dtu.dk/course/2018-2019/02180) of DTU.
 
-## Algorithms
+
+### Algorithms
 
 * **Entailment check**:  
   Based on the `PL-Resolution` algorithm in the book "Artificial Intelligence: A Modern Approach" by Stuart Russell and Peter Norvig. The implementation has been adapted from the [aima-python](https://github.com/aimacode/aima-python/) repository (MIT license).
 * **Finite partial entrenchment ranking**:  
   Based on the algorithms in [Applications of Belief Revision](http://research.it.uts.edu.au/magic/Mary-Anne/publications/BeliefRevisionApplicationsM-AWilliams.pdf) by Mary-Anne Williams, 1996.
 
-## Authors
+
+### Authors
 
 * [Devin Stein](https://github.com/dstein5) (s186262)
 * [Brian Domanski](https://github.com/bdomanski) (s186138)
 * [Theodoros Diamantidis](https://github.com/tdiam) (s186463)
 
-## Usage
+
+### Project structure
+* `belief_base.py`: The main class that implements a belief base and its change methods of revision, expansion and contraction.
+* `entailment.py`: Implementation of entailment check algorithm.
+* `utils.py`: Utility functions for manipulations of general structures or Sympy structures.
+* `cli.py`: The entry point of the application that launches a command-line interface tool for performing operations on a belief base.
+
+
+### Installation
+
+To install the required libraries, run:
+```bash
+$ pip install -r requirements.txt
+```
+
+
+### Usage
 
 The engine can be used through our command-line interface (CLI) as follows:
 ```bash
 $ python cli.py
 ```
 
-## License
+
+### License
 
 ```
 The MIT License (MIT)
