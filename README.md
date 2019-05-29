@@ -44,6 +44,45 @@ The engine can be used through our command-line interface (CLI) as follows:
 $ python cli.py
 ```
 
+#### Example of usage
+```
+$ python cli.py
+Available actions:
+r: Belief revision
+d: Calculate degree of belief
+e: Empty belief base
+p: Print belief base
+h: Print this help dialog
+q: Quit
+
+Select action:
+>>> r
+--- Revision ---
+Enter a formula:
+>>> a|b
+Select order (real number from 0 to 1):
+>>> 0.2
+
+Select action:
+>>> p
+--- Printing belief base ---
+Belief(a | b, order=0.2)
+
+Select action:
+>>> r
+--- Revision ---
+Enter a formula:
+>>> a
+Select order (real number from 0 to 1):
+>>> 0.5
+
+Select action:
+>>> p
+--- Printing belief base ---
+Belief(a | b, order=0.5)
+Belief(a, order=0.5)
+```
+
 
 ### License
 

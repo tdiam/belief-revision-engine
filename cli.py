@@ -6,11 +6,12 @@ from sympy import to_cnf, SympifyError
 from belief_base import BeliefBase
 
 
+PROMPT = ">>> "
+
 def print_help():
     print(
 f"""Available actions:
 r: Belief revision
-a: Add a belief
 d: Calculate degree of belief
 e: Empty belief base
 p: Print belief base
@@ -21,30 +22,19 @@ q: Quit
 
 
 def handle_input(bb):
-    action = input('Select action: ')
+    print('Select action:')
+    action = input(PROMPT)
     action = action.lower()
 
     if action == 'r':
         print('--- Revision ---')
-        frm = input('Enter a formula: ')
+        print('Enter a formula:')
+        frm = input(PROMPT)
         try:
             frm = to_cnf(frm)
-            order = input('Select order (real number from 0 to 1): ')
+            print('Select order (real number from 0 to 1):')
+            order = input(PROMPT)
             bb.revise(frm, float(order))
-        except SympifyError:
-            print('Invalid formula')
-        except ValueError:
-            print('Order has to be a real number from 0 to 1')
-        print()
-
-    elif action == 'a':
-        print('--- Add a belief ---')
-        print('--- Warning: This may result in an inconsistent belief base ---')
-        frm = input('Enter a formula: ')
-        try:
-            frm = to_cnf(frm)
-            order = input('Select order (real number from 0 to 1): ')
-            bb.add(frm, float(order))
         except SympifyError:
             print('Invalid formula')
         except ValueError:
@@ -53,7 +43,8 @@ def handle_input(bb):
 
     elif action == 'd':
         print('--- Calculate degree ---')
-        frm = input('Enter a formula: ')
+        print('Enter a formula:')
+        frm = input(PROMPT)
         try:
             frm = to_cnf(frm)
             print(bb.degree(frm))
