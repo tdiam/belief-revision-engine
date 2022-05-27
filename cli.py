@@ -1,5 +1,6 @@
 import argparse
 import logging
+from decimal import Decimal
 
 from sympy import to_cnf, SympifyError
 
@@ -34,7 +35,7 @@ def handle_input(bb):
             frm = to_cnf(frm)
             print('Select order (real number from 0 to 1):')
             order = input(PROMPT)
-            bb.revise(frm, float(order))
+            bb.revise(frm, Decimal(order))
         except SympifyError:
             print('Invalid formula')
         except ValueError:

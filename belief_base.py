@@ -7,6 +7,7 @@ by Mary-Anne Williams, 1996.
 
 import math
 import logging
+from decimal import Decimal
 from operator import neg
 
 from sympy.logic.boolalg import to_cnf, And, Or, Equivalent
@@ -42,7 +43,7 @@ class BeliefBase:
         """
         Add command to queue for change of belief order.
         """
-        self._reorder_queue.append((belief, order))
+        self._reorder_queue.append((belief, Decimal(order)))
 
     def _run_reorder_queue(self):
         """
@@ -62,7 +63,7 @@ class BeliefBase:
         """
         for belief in self.beliefs:
             if belief.formula == formula:
-                self._add_reorder_queue(belief, 0)
+                self._add_reorder_queue(belief, Decimal(0))
         self._run_reorder_queue()
 
     def iter_by_order(self):
@@ -94,8 +95,8 @@ class BeliefBase:
                 last_order = belief.order
                 continue
 
-            # If the order of this belief is "equal" to the previous, add it to the group
-            if isclose(belief.order, last_order):
+            # If the order of this belief is equal to the previous, add it to the group
+            if belief.order == last_order:
                 result.append(belief)
             # Otherwise, yield the group and reset
             else:
@@ -115,6 +116,7 @@ class BeliefBase:
         is not guaranteed after insertion.
         """
         formula = to_cnf(formula)
+        order = Decimal(order)
         _validate_order(order)
 
         # Remove duplicates
@@ -135,7 +137,7 @@ class BeliefBase:
         formula = to_cnf(formula)
         if entails([], formula):
             # Tautologies have degree = 1
-            return 1
+            return Decimal(1)
 
         base = []
         for order, group in self.iter_by_order():
@@ -143,7 +145,7 @@ class BeliefBase:
             base += [b.formula for b in group]
             if entails(base, formula):
                 return order
-        return 0
+        return Decimal(0)
 
     def expand(self, formula, order, add_on_finish=True):
         """
@@ -154,6 +156,7 @@ class BeliefBase:
             to the belief base after the ranking has been updated.
         """
         x = to_cnf(formula)
+        order = Decimal(order)
         _validate_order(order)
         logger.debug(f'Expanding with {x} and order {order}')
 
@@ -161,7 +164,7 @@ class BeliefBase:
             # If x is a contradiction, ignore
             if entails([], x):
                 # If x is a tautology, assign order = 1
-                order = 1
+                order = Decimal(1)
             else:
                 for belief in self.beliefs:
                     y = belief.formula
@@ -189,6 +192,7 @@ class BeliefBase:
         Updates entrenchment ranking for belief base contraction.
         """
         x = to_cnf(formula)
+        order = Decimal(order)
         _validate_order(order)
         logger.debug(f'Contracting with {x} and order {order}')
 
@@ -216,6 +220,7 @@ class BeliefBase:
             to the belief base after the ranking has been updated.
         """
         x = to_cnf(formula)
+        order = Decimal(order)
         _validate_order(order)
         dx = self.degree(x)
         logger.debug(f'Revising with {x} and order {order} and degree {dx}')
@@ -224,11 +229,11 @@ class BeliefBase:
             # If x is a contradiction, ignore
             if entails([], x):
                 # If x is a tautology, assign order = 1
-                order = 1
+                order = Decimal(1)
             elif order <= dx:
                 self.contract(x, order)
             else:
-                self.contract(~x, 0)
+                self.contract(~x, Decimal(0))
                 self.expand(x, order, add_on_finish=False)
 
             if add_on_finish:
@@ -263,7 +268,7 @@ class BeliefBase:
 class Belief:
     def __init__(self, formula, order=None):
         self.formula = formula
-        self.order = order
+        self.order = Decimal(order)
 
     def __lt__(self, other):
         return self.order < other.order
@@ -273,11 +278,3 @@ class Belief:
 
     def __repr__(self):
         return f'Belief({self.formula}, order={self.order})'
-
-
-def isclose(a, b):
-    """
-    Checks approximate equality of floating-point numbers a, b.
-    We add 1 to the numbers, since if a ~= b ~= 0, then relative tolerance will be zero.
-    """
-    return math.isclose(a + 1, b + 1)
